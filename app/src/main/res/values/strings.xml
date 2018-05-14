@@ -1,0 +1,29 @@
+<resources>
+    <string name="myapp_name">优链全球</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+
+    <string name="scan_text">将二维码放入框内, 即可自动扫描</string>
+    <string name="network_error">网络请求失败</string>
+    <string name="token_error">token已失效，请重新登录</string>
+
+    <string name="usdt_msg1">1、进行法币交易必须完成实名认证</string>
+    <string name="usdt_msg2">2、法币交易转账人必须为实名认证的姓名</string>
+    <string name="usdt_msg3">3、30分钟内未付款，订单将自动取消</string>
+    <string name="usdt_msg4">4、工作时间，转账并确认后，如30分钟内未收到币，请联系客服</string>
+    <string name="usdt_msg5">5、下单买入后冒充已付款，卖方可申诉举报，一经查实将禁封交易</string>
+    <string name="usdt_msg6">6、17:00以后及非工作日时间，每笔请拆分5万元以内进行转账，否则将延迟到账</string>
+    <string name="usdt_msg7">7、交易时间：10:00-21:00，其他时间的交易到账可能会延迟到下个交易时间段到账，请您知悉</string>
+</resources>

@@ -1,0 +1,64 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    defaultConfig {
+        applicationId "com.bby.youlianwallet"
+        minSdkVersion 15
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    signingConfigs {
+        debug {
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+        release {
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+    }
+}
+
+dependencies {
+    //    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.android.support:design:26.1.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    compile 'com.jakewharton:butterknife:8.4.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile 'com.mcxiaoke.volley:library:1.0.+'
+    implementation project(':library')
+    //    implementation 'com.squareup.okhttp:okhttp:2.7.5'
+    //    compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+    //google-gson
+    compile 'com.google.code.gson:gson:2.7'
+    //retrofit
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    //retrofit-string
+    compile 'com.squareup.retrofit2:converter-scalars:2.1.0'
+    //retrofit-converter-gson
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    //retrofit-rxJava-converter
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    implementation project(':zxing')
+    // https://mvnrepository.com/artifact/com.alibaba/fastjson
+    compile 'com.alibaba:fastjson:1.2.12'
+    provided files('libs/core.jar')
+    compile 'com.github.bumptech.glide:glide:4.0.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
+    compile 'org.apache.httpcomponents:httpcore:4.3.2'
+}
