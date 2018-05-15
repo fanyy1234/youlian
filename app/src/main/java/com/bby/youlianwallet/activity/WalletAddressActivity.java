@@ -24,6 +24,9 @@ import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class WalletAddressActivity extends MPermissionsActivity implements OnClickListener {
 
@@ -41,7 +44,11 @@ public class WalletAddressActivity extends MPermissionsActivity implements OnCli
     Button littlebitBtn;
     @BindView(R.id.address_submit_btn)
     LinearLayout addressSubmitBtn;
-    String bitStr = "",etherStr = "",littleBitStr = "";
+    String bitStr = "", etherStr = "", littleBitStr = "",usdtStr="";
+    @BindView(R.id.usdt_address)
+    EditText usdtAddress;
+    @BindView(R.id.usdt_btn)
+    Button usdtBtn;
 
     private JSONObject jsonObject;//用于接收服务端返回的结果
     private Handler mHandler = new Handler() {//用于处理服务端返回的结果
@@ -67,6 +74,7 @@ public class WalletAddressActivity extends MPermissionsActivity implements OnCli
         bitBtn.setOnClickListener(this);
         etherBtn.setOnClickListener(this);
         littlebitBtn.setOnClickListener(this);
+        usdtBtn.setOnClickListener(this);
         addressSubmitBtn.setOnClickListener(this);
     }
 
@@ -82,10 +90,14 @@ public class WalletAddressActivity extends MPermissionsActivity implements OnCli
             case R.id.littlebit_btn:
                 requestPermission(new String[]{Manifest.permission.CAMERA}, 3);
                 break;
+            case R.id.usdt_btn:
+                requestPermission(new String[]{Manifest.permission.CAMERA}, 4);
+                break;
             case R.id.address_submit_btn:
                 bitStr = bitAddress.getText().toString().trim();
                 etherStr = etherAddress.getText().toString().trim();
                 littleBitStr = littlebitAddress.getText().toString().trim();
+                usdtStr = usdtAddress.getText().toString().trim();
                 changeAddress();
                 break;
             default:
@@ -94,10 +106,10 @@ public class WalletAddressActivity extends MPermissionsActivity implements OnCli
     }
 
     private void queryAddress() {
-        retrofit2.Call<ResultDto> call = ApiClient.getApiAdapter().queryAddress(MyApplication.getToken());
-        call.enqueue(new retrofit2.Callback<ResultDto>() {
+        Call<ResultDto> call = ApiClient.getApiAdapter().queryAddress(MyApplication.getToken());
+        call.enqueue(new Callback<ResultDto>() {
             @Override
-            public void onResponse(retrofit2.Call<ResultDto> call, retrofit2.Response<ResultDto> response) {
+            public void onResponse(Call<ResultDto> call, Response<ResultDto> response) {
                 if (isFinish || response.body() == null) {
                     return;
                 }
@@ -106,47 +118,51 @@ public class WalletAddressActivity extends MPermissionsActivity implements OnCli
                     bitStr = jsonResult.getString("btc");
                     etherStr = jsonResult.getString("eth");
                     littleBitStr = jsonResult.getString("bit");
+                    usdtStr = jsonResult.getString("usdt");
                     bitAddress.setText(bitStr);
                     etherAddress.setText(etherStr);
                     littlebitAddress.setText(littleBitStr);
-                } else if(response.body().getCode() == 700) {
+                    usdtAddress.setText(usdtStr);
+                } else if (response.body().getCode() == 700) {
                     ToastUtil.showLongToast(getResources().getString(R.string.token_error));
-                    Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(intent);
                     SysApplication.getInstance().exit();
-                }else {
+                } else {
                     ToastUtil.showLongToast(response.body().getMessage());
                 }
             }
+
             @Override
-            public void onFailure(retrofit2.Call<ResultDto> call, Throwable t) {
+            public void onFailure(Call<ResultDto> call, Throwable t) {
                 ToastUtil.showLongToast(getResources().getString(R.string.network_error));
             }
         });
     }
 
     private void changeAddress() {
-        retrofit2.Call<ResultDto> call = ApiClient.getApiAdapter().changeAddress(MyApplication.getToken(),bitStr,etherStr,littleBitStr);
-        call.enqueue(new retrofit2.Callback<ResultDto>() {
+        Call<ResultDto> call = ApiClient.getApiAdapter().changeAddress(MyApplication.getToken(), bitStr, etherStr, littleBitStr,usdtStr);
+        call.enqueue(new Callback<ResultDto>() {
             @Override
-            public void onResponse(retrofit2.Call<ResultDto> call, retrofit2.Response<ResultDto> response) {
+            public void onResponse(Call<ResultDto> call, Response<ResultDto> response) {
                 if (isFinish || response.body() == null) {
                     return;
                 }
                 com.alibaba.fastjson.JSONObject jsonResult = EntityUtil.ObjectToJson(response.body());
                 if (response.body().getCode() == 0) {
                     ToastUtil.showLongToast("修改成功");
-                } else if(response.body().getCode() == 700) {
+                } else if (response.body().getCode() == 700) {
                     ToastUtil.showLongToast(getResources().getString(R.string.token_error));
-                    Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(intent);
                     SysApplication.getInstance().exit();
-                }else {
+                } else {
                     ToastUtil.showLongToast(response.body().getMessage());
                 }
             }
+
             @Override
-            public void onFailure(retrofit2.Call<ResultDto> call, Throwable t) {
+            public void onFailure(Call<ResultDto> call, Throwable t) {
                 ToastUtil.showLongToast(getResources().getString(R.string.network_error));
             }
         });
@@ -156,16 +172,20 @@ public class WalletAddressActivity extends MPermissionsActivity implements OnCli
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == 1) {
-            bitStr=data.getStringExtra("walletAddress");
+            bitStr = data.getStringExtra("walletAddress");
             bitAddress.setText(bitStr);
         }
         if (requestCode == 1 && resultCode == 2) {
-            etherStr=data.getStringExtra("walletAddress");
+            etherStr = data.getStringExtra("walletAddress");
             etherAddress.setText(etherStr);
         }
         if (requestCode == 1 && resultCode == 3) {
-            littleBitStr=data.getStringExtra("walletAddress");
+            littleBitStr = data.getStringExtra("walletAddress");
             littlebitAddress.setText(littleBitStr);
+        }
+        if (requestCode == 1 && resultCode == 4) {
+            usdtStr = data.getStringExtra("walletAddress");
+            usdtAddress.setText(usdtStr);
         }
     }
 
@@ -179,19 +199,24 @@ public class WalletAddressActivity extends MPermissionsActivity implements OnCli
         super.permissionSuccess(requestCode);
         switch (requestCode) {
             case 1:
-                Intent intent1 = new Intent(this,CaptureActivity.class);
-                intent1.putExtra("flag",1);
-                startActivityForResult(intent1,1);
+                Intent intent1 = new Intent(this, CaptureActivity.class);
+                intent1.putExtra("flag", 1);
+                startActivityForResult(intent1, 1);
                 break;
             case 2:
-                Intent intent2 = new Intent(this,CaptureActivity.class);
-                intent2.putExtra("flag",2);
-                startActivityForResult(intent2,1);
+                Intent intent2 = new Intent(this, CaptureActivity.class);
+                intent2.putExtra("flag", 2);
+                startActivityForResult(intent2, 1);
                 break;
             case 3:
-                Intent intent3 = new Intent(this,CaptureActivity.class);
-                intent3.putExtra("flag",3);
-                startActivityForResult(intent3,1);
+                Intent intent3 = new Intent(this, CaptureActivity.class);
+                intent3.putExtra("flag", 3);
+                startActivityForResult(intent3, 1);
+                break;
+            case 4:
+                Intent intent4 = new Intent(this, CaptureActivity.class);
+                intent4.putExtra("flag", 4);
+                startActivityForResult(intent4, 1);
                 break;
         }
 

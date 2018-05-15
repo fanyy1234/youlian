@@ -255,7 +255,7 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:text="推荐伽马" />
+                    android:text="推荐优链全球" />
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
@@ -296,6 +296,7 @@
                 android:layout_marginTop="0.5dp"
                 android:background="@color/white"
                 android:gravity="center_vertical"
+                android:visibility="gone"
                 android:paddingBottom="12dp"
                 android:paddingLeft="14dp"
                 android:paddingRight="14dp"

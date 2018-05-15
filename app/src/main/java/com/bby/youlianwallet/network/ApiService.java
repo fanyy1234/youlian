@@ -64,7 +64,8 @@ public interface ApiService {
     Call<ResultDto> changeAddress(@Header("Authorization") String authorization,
                                    @Field("btcAddress") String bitadd,
                                    @Field("ethAddress") String ether,
-                                   @Field("bitAddress") String littlebit);
+                                   @Field("bitAddress") String littlebit,
+                                   @Field("usdtAddress") String usdtAddress);
 
     /**
      * 提币

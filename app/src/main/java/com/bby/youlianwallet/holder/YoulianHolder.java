@@ -32,6 +32,7 @@ public class YoulianHolder extends BaseViewHolder<Youlian> {
             public void onClick(View view) {
                 Intent intent = new Intent(adapter.getmContext(), YoulianDetailActivity.class);
                 intent.putExtra("url",model.getUrl());
+                intent.putExtra("title",model.getTitle());
                 adapter.getmContext().startActivity(intent);
             }
         });

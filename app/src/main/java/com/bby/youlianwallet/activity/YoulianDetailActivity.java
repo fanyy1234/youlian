@@ -43,6 +43,7 @@ public class YoulianDetailActivity extends BaseActivity implements OnClickListen
     }
 
     private void initView() {
+        title.setText(getIntent().getStringExtra("title"));
         String url = getIntent().getStringExtra("url");
         aboutUs();
     }

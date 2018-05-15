@@ -65,7 +65,7 @@ public class WithdrawActivity extends BaseActivity implements OnClickListener {
     private TextView typetext1, typetext2, typetext3;
     private int selectedType = 4;
     private int selectedColor;
-    String bitStr = "", etherStr = "", littleBitStr = "";
+    String bitStr = "", etherStr = "", littleBitStr = "",usdtStr="";
     String myWalletUrl = "";
     private String[] payTypeArr = {"", "比特币", "以太坊", "小比特"};
     long currentTime = 0;
@@ -189,7 +189,8 @@ public class WithdrawActivity extends BaseActivity implements OnClickListener {
                     bitStr = jsonResult.getString("btc");
                     etherStr = jsonResult.getString("eth");
                     littleBitStr = jsonResult.getString("bit");
-                    withdrawUrl.setText(bitStr);
+                    usdtStr = jsonResult.getString("usdt");
+                    withdrawUrl.setText(usdtStr);
                 } else if (response.body().getCode() == 700) {
                     ToastUtil.showLongToast(getResources().getString(R.string.token_error));
                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);

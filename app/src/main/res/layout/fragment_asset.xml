@@ -84,7 +84,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="冻结(γ)"
+                                android:text="冻结(GOC)"
                                 android:textColor="@color/white"
                                 android:textSize="12sp" />
                         </LinearLayout>
@@ -92,8 +92,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:gravity="center_horizontal"
                             android:layout_marginLeft="2dp"
+                            android:gravity="right"
                             android:orientation="vertical">
                             <TextView
                                 android:id="@+id/release_asset"
@@ -106,13 +106,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/white"
-                                android:text="释放(γ)"
+                                android:text="释放(GOC)"
                                 android:textSize="12sp"/>
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:visibility="gone"
                             android:gravity="right"
                             android:layout_marginLeft="2dp"
                             android:orientation="vertical">
