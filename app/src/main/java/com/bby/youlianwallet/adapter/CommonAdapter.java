@@ -17,6 +17,7 @@ public class CommonAdapter extends BaseRecyclerAdapter<BaseViewHolder> {
     private TypeFactory typeFactory;
     private List<Visitable> models;
     private Context mContext;
+    private View.OnClickListener onClickListener;
     public CommonAdapter(List<Visitable> models, Context context) {
         this.models = models;
         this.typeFactory = new TypeFactoryForList();
@@ -51,6 +52,13 @@ public class CommonAdapter extends BaseRecyclerAdapter<BaseViewHolder> {
     public void setData( List<Visitable> models) {
         this.models = models;
         notifyDataSetChanged();
+    }
+    public void setOnClickListener(View.OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
+    }
+
+    public View.OnClickListener getOnClickListener() {
+        return onClickListener;
     }
 
     @Override

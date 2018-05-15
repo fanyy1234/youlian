@@ -13,6 +13,7 @@ import com.bby.youlianwallet.holder.TransferRecordHolder;
 import com.bby.youlianwallet.holder.UsdtRecordHolder;
 import com.bby.youlianwallet.holder.WithdrawDetailViewHolder;
 import com.bby.youlianwallet.holder.YejiViewHolder;
+import com.bby.youlianwallet.holder.YoulianHeadHolder;
 import com.bby.youlianwallet.holder.YoulianHolder;
 import com.bby.youlianwallet.model.AssetDetail;
 import com.bby.youlianwallet.model.FeedBack;
@@ -24,6 +25,7 @@ import com.bby.youlianwallet.model.UsdtRecord;
 import com.bby.youlianwallet.model.WithdrawDetail;
 import com.bby.youlianwallet.model.Yeji;
 import com.bby.youlianwallet.model.Youlian;
+import com.bby.youlianwallet.model.YoulianHead;
 
 
 /**
@@ -41,6 +43,7 @@ public class TypeFactoryForList implements TypeFactory {
     private final int TYPE_RESOURCE_FEEDBACK = R.layout.item_feedback;
     private final int TYPE_RESOURCE_USDT = R.layout.item_usdt;
     private final int TYPE_RESOURCE_YOULIAN = R.layout.item_youlian;
+    private final int TYPE_RESOURCE_YOULIANHEAD = R.layout.item_youlian_head;
 
     @Override
     public int type(Person person) {
@@ -75,6 +78,8 @@ public class TypeFactoryForList implements TypeFactory {
     public int type(UsdtRecord usdtRecord) {return  TYPE_RESOURCE_USDT; }
     @Override
     public int type(Youlian youlian) {return  TYPE_RESOURCE_YOULIAN; }
+    @Override
+    public int type(YoulianHead youlian) {return  TYPE_RESOURCE_YOULIANHEAD; }
 
     @Override
     public BaseViewHolder createViewHolder(int type, View itemView) {
@@ -99,6 +104,8 @@ public class TypeFactoryForList implements TypeFactory {
             return  new UsdtRecordHolder(itemView);
         }else if (TYPE_RESOURCE_YOULIAN == type){
             return  new YoulianHolder(itemView);
+        }else if (TYPE_RESOURCE_YOULIANHEAD == type){
+            return  new YoulianHeadHolder(itemView);
         }
 
         return null;

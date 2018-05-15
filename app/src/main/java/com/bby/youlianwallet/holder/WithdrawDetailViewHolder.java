@@ -12,7 +12,7 @@ import com.bby.youlianwallet.model.WithdrawDetail;
  */
 
 public class WithdrawDetailViewHolder extends BaseViewHolder<WithdrawDetail> {
-    private static String[] typeArr = {"","比特币","以太坊","小比特"};
+    private static String[] typeArr = {"","比特币","以太坊","小比特","USDT"};
     private static String[] statusArr = {"审核中","已通过","未通过",""};
     private static int[] statusColorArr = {R.color.black,R.color.appcolor,R.color.red,R.color.black};
     public WithdrawDetailViewHolder(View itemView) {

@@ -59,7 +59,12 @@ public class USDTRecordActivity extends BaseActivity implements OnClickListener 
 		public Fragment getItem(int position) {
 			OrderListFragment fragment = new OrderListFragment();
 			Bundle bundle = new Bundle();
-			bundle.putInt("status",position);
+			if (position==2){
+				bundle.putInt("status",4);
+			}
+			else {
+				bundle.putInt("status",position);
+			}
 			fragment.setArguments(bundle);
 			return fragment;
 		}

@@ -65,14 +65,15 @@ public class RechargeActivity extends BaseActivity implements OnClickListener {
     private PopupWindow popupWindow;
     private View paytype1, paytype2, paytype3;
     private TextView typetext1, typetext2, typetext3;
-    private int selectedType = 1;
+    private int selectedType = 4;
     private int selectedColor;
     String bitStr = "", etherStr = "", littleBitStr = "";
     String myWalletUrl = "";
-    private String[] payTypeArr = {"", "比特币", "以太坊", "小比特"};
+    private String[] payTypeArr = {"", "比特币", "以太坊", "小比特","USDT"};
     long currentTime = 0;
     String numString = "";
-    long payNumInit = 0;
+    long payNumInit = 1;
+    boolean flag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,9 +114,7 @@ public class RechargeActivity extends BaseActivity implements OnClickListener {
                 } else {
                     long pauseTime = System.currentTimeMillis() - currentTime;
                     currentTime = System.currentTimeMillis();
-                    if (pauseTime > 400) {
-                        rechargeData(Long.parseLong(numStr));
-                    }
+                    rechargeData(Long.parseLong(numStr));
                 }
             }
         });
@@ -126,14 +125,12 @@ public class RechargeActivity extends BaseActivity implements OnClickListener {
         numString = rechargeNum.getText().toString();
         switch (v.getId()) {
             case R.id.paytype_select:
-                showPopwindow(selectPayTypeView());
+//                showPopwindow(selectPayTypeView());
                 break;
             case R.id.recharge_submit:
                 myWalletUrl = walletUrl.getText().toString();
                 if (numString.equals("") || numString.equals("0")) {
                     Toast.makeText(getApplicationContext(), "充值数量必须大于0", Toast.LENGTH_LONG).show();
-                } else if (myWalletUrl.equals("")) {
-                    ToastUtil.showLongToast(payTypeArr[selectedType] + "的钱包地址为空,无法提交");
                 } else {
                     rechargeSubmit.setClickable(false);
                     recharge(Long.parseLong(numString));
@@ -200,7 +197,13 @@ public class RechargeActivity extends BaseActivity implements OnClickListener {
                     if (payNumInit == 0) {
                         payNumInit = 10;
                     } else {
-                        payNum.setText(payNumberBd.toString());
+                        if (payNumInit==1&&!flag){
+                            flag = true;
+                        }
+                        else {
+                            payNum.setText(payNumberBd.toString());
+                        }
+
                     }
                     minNum.setText(minNumber+"");
                     payUrl.setText(receivableAddress);

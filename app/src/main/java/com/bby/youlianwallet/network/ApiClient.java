@@ -15,8 +15,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient {
 
     private static Retrofit imAdapter;
-    public final static String API_URL="http://mobile.betaofwallet.com/";
-//    public final static String API_URL="http://192.168.0.105:8080/";
+//    public final static String API_URL="http://mobile.betaofwallet.com/";
+    public final static String API_URL="http://192.168.0.105:8080/";
 
     private static OkHttpClient client;
     static HttpLoggingInterceptor loggingInterceptor=new HttpLoggingInterceptor();

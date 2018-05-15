@@ -63,7 +63,7 @@ public class WithdrawActivity extends BaseActivity implements OnClickListener {
     private PopupWindow popupWindow;
     private View paytype1, paytype2, paytype3;
     private TextView typetext1, typetext2, typetext3;
-    private int selectedType = 1;
+    private int selectedType = 4;
     private int selectedColor;
     String bitStr = "", etherStr = "", littleBitStr = "";
     String myWalletUrl = "";
@@ -111,9 +111,7 @@ public class WithdrawActivity extends BaseActivity implements OnClickListener {
                 } else {
                     long pauseTime = System.currentTimeMillis() - currentTime;
                     currentTime = System.currentTimeMillis();
-                    if (pauseTime > 400) {
-                        rechargeData(Long.parseLong(numStr));
-                    }
+                    rechargeData(Long.parseLong(numStr));
                 }
             }
         });
@@ -124,7 +122,7 @@ public class WithdrawActivity extends BaseActivity implements OnClickListener {
         numString = betaNum.getText().toString();
         switch (v.getId()) {
             case R.id.paytype_select:
-                showPopwindow(selectPayTypeView());
+//                showPopwindow(selectPayTypeView());
                 break;
             case R.id.withdraw_submit:
                 myWalletUrl = withdrawUrl.getText().toString();

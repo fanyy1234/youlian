@@ -17,12 +17,14 @@ import com.andview.refreshview.XRefreshViewFooter;
 import com.bby.youlianwallet.R;
 import com.bby.youlianwallet.activity.LoginActivity;
 import com.bby.youlianwallet.adapter.CommonAdapter;
+import com.bby.youlianwallet.base.BaseUrl;
 import com.bby.youlianwallet.base.MyApplication;
 import com.bby.youlianwallet.base.SysApplication;
 import com.bby.youlianwallet.model.Notice;
 import com.bby.youlianwallet.model.ResultDto;
 import com.bby.youlianwallet.model.Visitable;
 import com.bby.youlianwallet.model.Youlian;
+import com.bby.youlianwallet.model.YoulianHead;
 import com.bby.youlianwallet.network.ApiClient;
 import com.bby.youlianwallet.util.EntityUtil;
 import com.bby.youlianwallet.util.ToastUtil;
@@ -45,7 +47,6 @@ public class YoulianFragment extends BaseLazyFragment implements OnClickListener
 	RecyclerView recyclerView;
 	CommonAdapter adapter;
 	List<Visitable> models = new ArrayList<Visitable>();
-	XRefreshView xRefreshView;
 	LinearLayoutManager layoutManager;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,27 +57,20 @@ public class YoulianFragment extends BaseLazyFragment implements OnClickListener
 	}
 
 	private void init() {
-		xRefreshView = (XRefreshView) view.findViewById(R.id.xrefreshview);
 		recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_test_rv);
 		recyclerView.setHasFixedSize(true);
 
 		adapter = new CommonAdapter(models, getActivity());
 		layoutManager = new LinearLayoutManager(getActivity());
-
-		Youlian youlian = new Youlian();
-		youlian.setId(1);
-		models.add(youlian);
-		models.add(youlian);
-		models.add(youlian);
-		adapter.notifyDataSetChanged();
+		recyclerView.setLayoutManager(layoutManager);
+		recyclerView.setAdapter(adapter);
+		YoulianHead youlianHead = new YoulianHead();
+		models.add(youlianHead);
+		getInfo();
 	}
 
-	@Override
-	public void onClick(View v) {
-	}
-
-	private void notice() {
-		retrofit2.Call<ResultDto> call = ApiClient.getApiAdapter().notice(MyApplication.getToken());
+	private void getInfo() {
+		retrofit2.Call<ResultDto> call = ApiClient.getApiAdapter().consultation(MyApplication.getToken());
 		call.enqueue(new retrofit2.Callback<ResultDto>() {
 			@Override
 			public void onResponse(retrofit2.Call<ResultDto> call, retrofit2.Response<ResultDto> response) {
@@ -89,15 +83,14 @@ public class YoulianFragment extends BaseLazyFragment implements OnClickListener
 					int length = jsonArray.size();
 					for (int i = 0; i< length; i++){
 						JSONObject jsonObject = jsonArray.getJSONObject(i);
-						String time = jsonObject.getString("ct");
-						String title = jsonObject.getString("title");
-						String img = jsonObject.getString("image");
-						Notice notice = new Notice();
-						notice.setCt(time);
-						notice.setTitle(title);
-						notice.setImage(img);
-						notice.setId(jsonObject.getLong("id"));
-						models.add(notice);
+						Youlian record = new Youlian();
+						record.setId(jsonObject.getInteger("id"));
+						record.setTime(jsonObject.getString("ct"));
+						record.setImg(jsonObject.getString("image"));
+						record.setTitle(jsonObject.getString("title"));
+						record.setUrl(jsonObject.getString("url"));
+						record.setDesc(jsonObject.getString("desc"));
+						models.add(record);
 					}
 					adapter.notifyDataSetChanged();
 				} else if(response.body().getCode() == 700) {
@@ -115,6 +108,10 @@ public class YoulianFragment extends BaseLazyFragment implements OnClickListener
 			}
 		});
 	}
+	@Override
+	public void onClick(View v) {
+	}
+
 
 	@Override
 	public void onDestroyView() {

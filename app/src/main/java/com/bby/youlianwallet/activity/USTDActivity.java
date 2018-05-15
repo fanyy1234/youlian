@@ -41,6 +41,7 @@ public class USTDActivity extends BaseActivity implements OnClickListener {
     @BindView(R.id.usdt_record)
     LinearLayout usdtRecord;
     private long bugNum = 1;
+    private boolean flag = false;
     long currentTime = 0;
     String numString = "";
     @Override
@@ -75,12 +76,8 @@ public class USTDActivity extends BaseActivity implements OnClickListener {
                 } else if (numStr.equals("")) {
                     sumMoney.setText("");
                 } else {
-                    long pauseTime = System.currentTimeMillis() - currentTime;
-                    currentTime = System.currentTimeMillis();
-                    if (pauseTime > 400) {
-                        bugNum = Long.parseLong(numStr);
-                        getInfo();
-                    }
+                    bugNum = Long.parseLong(numStr);
+                    getInfo();
                 }
             }
         });
@@ -96,6 +93,7 @@ public class USTDActivity extends BaseActivity implements OnClickListener {
                 }
                 else {
                     bugNum = Long.parseLong(numString);
+                    buyUsdt();
                 }
                 break;
             case R.id.usdt_record:
@@ -115,9 +113,23 @@ public class USTDActivity extends BaseActivity implements OnClickListener {
                 if (isFinish || response.body() == null) {
                     return;
                 }
-                JSONObject jsonResult = EntityUtil.ObjectToJson2(response.body());
+                JSONObject jsonResponse = EntityUtil.ObjectToJson2(response.body());
                 if (response.body().getCode() == 0) {
-                    //TODO
+                    JSONObject jsonResult = jsonResponse.getJSONObject("result");
+                    usdtYue.setText(jsonResult.getLong("usdt").toString());
+                    usdtPrice.setText(jsonResult.getBigDecimal("payPrice").toString());
+                    if (bugNum==0){
+                        sumMoney.setText("");
+                    }
+                    else {
+                        if (bugNum==1&&!flag){
+                            flag = true;
+                        }
+                        else {
+                            sumMoney.setText(jsonResult.getBigDecimal("payNumber").toString());
+                        }
+                    }
+
                 } else if (response.body().getCode() == 700) {
                     ToastUtil.showLongToast(getResources().getString(R.string.token_error));
                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
@@ -144,7 +156,8 @@ public class USTDActivity extends BaseActivity implements OnClickListener {
                 }
                 JSONObject jsonResult = EntityUtil.ObjectToJson2(response.body());
                 if (response.body().getCode() == 0) {
-                    //TODO
+                    Intent intent1 = new Intent(USTDActivity.this,USDTRecordActivity.class);
+                    startActivity(intent1);
                 } else if (response.body().getCode() == 700) {
                     ToastUtil.showLongToast(getResources().getString(R.string.token_error));
                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);

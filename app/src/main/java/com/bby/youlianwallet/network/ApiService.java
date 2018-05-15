@@ -130,6 +130,11 @@ public interface ApiService {
      */
     @GET("mobile/cms/notice")
     Call<ResultDto> notice(@Header("Authorization") String authorization);
+    /**
+     * 首页
+     */
+    @GET("mobile/cms/consultation")
+    Call<ResultDto> consultation(@Header("Authorization") String authorization);
 
     /**
      * 公告详情
@@ -216,12 +221,33 @@ public interface ApiService {
     Call<ResultDto> buyUsdtData(@Header("Authorization") String authorization,
                                   @Field("buyNumber") long buyNumber);
     /**
+     * 取消订单
+     */
+    @FormUrlEncoded
+    @POST("mobile/member/order/cancellationOrder")
+    Call<ResultDto> cancellationOrder(@Header("Authorization") String authorization,
+                                  @Field("id") long id);
+    /**
+     * 立即支付订单
+     */
+    @FormUrlEncoded
+    @POST("mobile/member/order/immediatePay")
+    Call<ResultDto> immediatePay(@Header("Authorization") String authorization,
+                                  @Field("id") long id);
+    /**
      * usdt买入
      */
     @FormUrlEncoded
     @POST("mobile/member/order/buyUsdt")
     Call<ResultDto> buyUsdt(@Header("Authorization") String authorization,
                                   @Field("buyNumber") long buyNumber);
+    /**
+     * usdt订单0未完成1已完成4已取消
+     */
+    @FormUrlEncoded
+    @POST("mobile/member/order/orderList")
+    Call<ResultDto> orderList(@Header("Authorization") String authorization,@Field("orderStatus") Integer orderStatus,@Field("page") Integer page,
+                                  @Field("pageSize") Integer pageSize);
 
 
 

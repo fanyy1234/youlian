@@ -84,7 +84,7 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:text="USTD汇兑" />
+                    android:text="USDT汇兑" />
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"

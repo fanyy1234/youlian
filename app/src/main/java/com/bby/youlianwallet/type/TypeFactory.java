@@ -3,6 +3,7 @@ package com.bby.youlianwallet.type;
 import android.view.View;
 
 import com.bby.youlianwallet.holder.BaseViewHolder;
+import com.bby.youlianwallet.holder.YoulianHolder;
 import com.bby.youlianwallet.model.AssetDetail;
 import com.bby.youlianwallet.model.FeedBack;
 import com.bby.youlianwallet.model.Notice;
@@ -13,6 +14,7 @@ import com.bby.youlianwallet.model.UsdtRecord;
 import com.bby.youlianwallet.model.WithdrawDetail;
 import com.bby.youlianwallet.model.Yeji;
 import com.bby.youlianwallet.model.Youlian;
+import com.bby.youlianwallet.model.YoulianHead;
 
 
 /**
@@ -30,6 +32,7 @@ public interface TypeFactory {
     int type(FeedBack feedBack);
     int type(UsdtRecord usdtRecord);
     int type(Youlian youlian);
+    int type(YoulianHead youlianHead);
 
     BaseViewHolder createViewHolder(int type, View itemView);
 }

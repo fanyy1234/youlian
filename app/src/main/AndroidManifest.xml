@@ -13,7 +13,7 @@
         android:name="com.bby.youlianwallet.base.MyApplication"
         tools:replace="android:icon,android:label,android:theme"
         android:allowBackup="true"
-        android:icon="@mipmap/asset_item"
+        android:icon="@mipmap/my_logo"
         android:label="@string/myapp_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -99,6 +99,10 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name="com.bby.youlianwallet.activity.USDTRecordActivity"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.bby.youlianwallet.activity.YoulianDetailActivity"
             android:windowSoftInputMode="adjustUnspecified|stateHidden"
             android:screenOrientation="portrait"/>
     </application>

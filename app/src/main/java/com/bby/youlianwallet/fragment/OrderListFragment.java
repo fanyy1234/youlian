@@ -121,7 +121,7 @@ public class OrderListFragment extends BaseLazyFragment implements OnClickListen
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         pageNo++;
-                        record();
+                        orderList();
                         if (isBottom == true) {//模拟没有更多数据的情况
                             xRefreshView.setLoadComplete(true);
                         } else {
@@ -136,74 +136,39 @@ public class OrderListFragment extends BaseLazyFragment implements OnClickListen
                 }, 1000);
             }
         });
+
+        adapter.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final int p = (int) view.getTag();
+                UsdtRecord record = (UsdtRecord)models.get(p);
+                switch (view.getId()){
+                    case R.id.cancel_order:
+                        cancelOrder(record.getId());
+                        break;
+                    case R.id.pay_now:
+                        immediatePay(record.getId());
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
     }
     private void initData() {
         models.clear();
         pageNo = 1;
         isBottom = false;
-        record();
+        orderList();
     }
+
     @Override
     public void onClick(View v) {
     }
 
-    private void record(){
-        for (int i = 0; i< 2; i++){
-            UsdtRecord record = new UsdtRecord();
-            record.setTime("1990-1007");
-            record.setNum(i+"");
-            record.setOrderNo("000000000000");
-            record.setPrice("$100");
-            record.setType("买入");
-            record.setSumPrice("$44444");
-            models.add(record);
-        }
-//        if (status==0){
-//            transferRecord();
-//        }
-//        else {
-//            collectRecord();
-//        }
-    }
 
-    private void transferRecord() {
-//        retrofit2.Call<ResultDto> call = ApiClient.getApiAdapter().turnRecord(MyApplication.getToken(),pageNo, BaseUrl.pageSize);
-//        call.enqueue(new retrofit2.Callback<ResultDto>() {
-//            @Override
-//            public void onResponse(retrofit2.Call<ResultDto> call, retrofit2.Response<ResultDto> response) {
-//                if (isFinish || response.body() == null) {
-//                    return;
-//                }
-//                JSONObject jsonResult = EntityUtil.ObjectToJson2(response.body());
-//                if (response.body().getCode() == 0) {
-//                    JSONArray jsonArray = jsonResult.getJSONArray("result");
-//                    int length = jsonArray.size();
-//                    for (int i = 0; i< length; i++){
-//                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-//                        TransferRecord record = new TransferRecord();
-//                        record.setAccount("收款账户："+jsonObject.getString("collectMoblie"));
-//                        record.setMoeny(jsonObject.getDouble("money"));
-//                        record.setTime(jsonObject.getString("createTime"));
-//                        models.add(record);
-//                    }
-//                    adapter.notifyDataSetChanged();
-//                } else if(response.body().getCode() == 700) {
-//                    ToastUtil.showLongToast(getResources().getString(R.string.token_error));
-//                    Intent intent = new Intent(getActivity(),LoginActivity.class);
-//                    startActivity(intent);
-//                    SysApplication.getInstance().exit();
-//                }else {
-//                    ToastUtil.showLongToast(response.body().getMessage());
-//                }
-//            }
-//            @Override
-//            public void onFailure(retrofit2.Call<ResultDto> call, Throwable t) {
-//                ToastUtil.showLongToast(getResources().getString(R.string.network_error));
-//            }
-//        });
-    }
-    private void collectRecord() {
-        retrofit2.Call<ResultDto> call = ApiClient.getApiAdapter().collectRecord(MyApplication.getToken(),pageNo, BaseUrl.pageSize);
+    private void orderList() {
+        retrofit2.Call<ResultDto> call = ApiClient.getApiAdapter().orderList(MyApplication.getToken(),status,pageNo, BaseUrl.pageSize);
         call.enqueue(new retrofit2.Callback<ResultDto>() {
             @Override
             public void onResponse(retrofit2.Call<ResultDto> call, retrofit2.Response<ResultDto> response) {
@@ -216,13 +181,75 @@ public class OrderListFragment extends BaseLazyFragment implements OnClickListen
                     int length = jsonArray.size();
                     for (int i = 0; i< length; i++){
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        TransferRecord record = new TransferRecord();
-                        record.setAccount("转账账户："+jsonObject.getString("turnMoblie"));
-                        record.setMoeny(jsonObject.getDouble("money"));
-                        record.setTime(jsonObject.getString("createTime"));
+                        UsdtRecord record = new UsdtRecord();
+                        record.setId(jsonObject.getLong("id"));
+                        record.setTime(jsonObject.getString("ct"));
+                        record.setPrice("￥"+jsonObject.getBigDecimal("payPrice").toString());
+                        record.setSumPrice("￥"+jsonObject.getBigDecimal("payNumber").toString());
+                        record.setOrderNo(jsonObject.getString("orderNo"));
+                        record.setNum("x "+jsonObject.getLong("buyNumber").toString());
+                        record.setType("");
+                        record.setName(jsonObject.getString("payee"));
+                        record.setBank(jsonObject.getString("bank"));
+                        record.setBranch(jsonObject.getString("branch"));
+                        record.setCardNo(jsonObject.getString("cardNumber"));
+                        record.setRemark(jsonObject.getString("remark"));
+                        record.setOrderStatus(jsonObject.getInteger("orderStatus"));
                         models.add(record);
                     }
                     adapter.notifyDataSetChanged();
+                } else if(response.body().getCode() == 700) {
+                    ToastUtil.showLongToast(getResources().getString(R.string.token_error));
+                    Intent intent = new Intent(getActivity(),LoginActivity.class);
+                    startActivity(intent);
+                    SysApplication.getInstance().exit();
+                }else {
+                    ToastUtil.showLongToast(response.body().getMessage());
+                }
+            }
+            @Override
+            public void onFailure(retrofit2.Call<ResultDto> call, Throwable t) {
+                ToastUtil.showLongToast(getResources().getString(R.string.network_error));
+            }
+        });
+    }
+    private void cancelOrder(long id) {
+        retrofit2.Call<ResultDto> call = ApiClient.getApiAdapter().cancellationOrder(MyApplication.getToken(),id);
+        call.enqueue(new retrofit2.Callback<ResultDto>() {
+            @Override
+            public void onResponse(retrofit2.Call<ResultDto> call, retrofit2.Response<ResultDto> response) {
+                if (isFinish || response.body() == null) {
+                    return;
+                }
+                JSONObject jsonResult = EntityUtil.ObjectToJson2(response.body());
+                if (response.body().getCode() == 0) {
+                    initData();
+                } else if(response.body().getCode() == 700) {
+                    ToastUtil.showLongToast(getResources().getString(R.string.token_error));
+                    Intent intent = new Intent(getActivity(),LoginActivity.class);
+                    startActivity(intent);
+                    SysApplication.getInstance().exit();
+                }else {
+                    ToastUtil.showLongToast(response.body().getMessage());
+                }
+            }
+            @Override
+            public void onFailure(retrofit2.Call<ResultDto> call, Throwable t) {
+                ToastUtil.showLongToast(getResources().getString(R.string.network_error));
+            }
+        });
+    }
+    private void immediatePay(long id) {
+        retrofit2.Call<ResultDto> call = ApiClient.getApiAdapter().immediatePay(MyApplication.getToken(),id);
+        call.enqueue(new retrofit2.Callback<ResultDto>() {
+            @Override
+            public void onResponse(retrofit2.Call<ResultDto> call, retrofit2.Response<ResultDto> response) {
+                if (isFinish || response.body() == null) {
+                    return;
+                }
+                JSONObject jsonResult = EntityUtil.ObjectToJson2(response.body());
+                if (response.body().getCode() == 0) {
+                    initData();
                 } else if(response.body().getCode() == 700) {
                     ToastUtil.showLongToast(getResources().getString(R.string.token_error));
                     Intent intent = new Intent(getActivity(),LoginActivity.class);
