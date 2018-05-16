@@ -24,7 +24,8 @@
     <color name="lightgrey">#ECECEC</color>
     <color name="lightlightgrey">#F1F1F1</color>
     <color name="blue">#0074A6</color>
-    <color name="appcolor">#2CB34A</color>
+    <color name="appcolor">#0B321B</color>
+    <!--<color name="appcolor">#2CB34A</color>-->
     <color name="appbgcolor">#ECECEC</color>
     <color name="fontgrey">#ADADAD</color>
 

@@ -18,7 +18,7 @@ public class URLDrawable extends BitmapDrawable {
               public URLDrawable(Context context) {
                  this.setBounds(SystemInfoUtils.getDefaultImageBounds(context));
 
-                 drawable = context.getResources().getDrawable(R.mipmap.ic_pic_notfound);
+                 drawable = context.getResources().getDrawable(R.mipmap.loading);
                  drawable.setBounds(SystemInfoUtils.getDefaultImageBounds(context));
              }
 
