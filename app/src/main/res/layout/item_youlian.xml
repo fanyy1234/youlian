@@ -4,13 +4,14 @@
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@color/white"/>
     <ImageView
         android:id="@+id/img"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:scaleType="fitXY"/>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/white"/>
+
 </LinearLayout>

@@ -45,7 +45,20 @@ public class YoulianDetailActivity extends BaseActivity implements OnClickListen
     private void initView() {
         title.setText(getIntent().getStringExtra("title"));
         String url = getIntent().getStringExtra("url");
-        aboutUs();
+        webView.loadUrl(url);
+
+        webView.setWebViewClient(new WebViewClient());
+        webView.setWebChromeClient(new WebChromeClient());
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);//允许使用js
+        webSettings.setSupportZoom(true);
+        // 设置出现缩放工具
+        webSettings.setBuiltInZoomControls(false);
+        //扩大比例的缩放
+        webSettings.setUseWideViewPort(true);
+        //自适应屏幕
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        webSettings.setLoadWithOverviewMode(true);
     }
 
     @Override
@@ -56,45 +69,4 @@ public class YoulianDetailActivity extends BaseActivity implements OnClickListen
         }
     }
 
-    private void aboutUs() {
-        Call<ResultDto> call = ApiClient.getApiAdapter().aboutUs(MyApplication.getToken());
-        call.enqueue(new Callback<ResultDto>() {
-            @Override
-            public void onResponse(Call<ResultDto> call, Response<ResultDto> response) {
-                if (isFinish || response.body() == null) {
-                    return;
-                }
-                if (response.body().getCode() == 0) {
-                    String result = response.body().getResult().toString();
-                    webView.loadUrl(result);
-
-                    webView.setWebViewClient(new WebViewClient());
-                    webView.setWebChromeClient(new WebChromeClient());
-
-                    WebSettings webSettings = webView.getSettings();
-                    webSettings.setJavaScriptEnabled(true);//允许使用js
-                    webSettings.setSupportZoom(true);
-                    // 设置出现缩放工具
-                    webSettings.setBuiltInZoomControls(true);
-                    //扩大比例的缩放
-                    webSettings.setUseWideViewPort(true);
-                    //自适应屏幕
-                    webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-                    webSettings.setLoadWithOverviewMode(true);
-                } else if (response.body().getCode() == 700) {
-                    ToastUtil.showLongToast(getResources().getString(R.string.token_error));
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(intent);
-                    SysApplication.getInstance().exit();
-                } else {
-                    ToastUtil.showLongToast(response.body().getMessage());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResultDto> call, Throwable t) {
-                ToastUtil.showLongToast(getResources().getString(R.string.network_error));
-            }
-        });
-    }
 }

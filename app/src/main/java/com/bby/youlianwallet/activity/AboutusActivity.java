@@ -40,7 +40,22 @@ public class AboutusActivity extends BaseActivity implements OnClickListener {
     }
 
     private void initView() {
-        aboutUs();
+        webView.loadUrl("http://admin.goc.one/tupian.html");
+
+        webView.setWebViewClient(new WebViewClient());
+        webView.setWebChromeClient(new WebChromeClient());
+
+        WebSettings webSettings=webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);//允许使用js
+        webSettings.setSupportZoom(true);
+        // 设置出现缩放工具
+        webSettings.setBuiltInZoomControls(true);
+        //扩大比例的缩放
+        webSettings.setUseWideViewPort(true);
+        //自适应屏幕
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        webSettings.setLoadWithOverviewMode(true);
+//        aboutUs();
     }
 
     @Override

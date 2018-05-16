@@ -320,6 +320,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/clear_cache"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0.5dp"
@@ -336,6 +337,7 @@
                     android:src="@mipmap/delete" />
 
                 <TextView
+                    android:id="@+id/menu_clear_cash"
                     android:layout_width="match_parent"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"

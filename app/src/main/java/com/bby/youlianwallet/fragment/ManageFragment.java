@@ -23,6 +23,7 @@ import com.bby.youlianwallet.activity.WalletAddressActivity;
 import com.bby.youlianwallet.activity.WithdrawActivity;
 import com.bby.youlianwallet.base.LoginUser;
 import com.bby.youlianwallet.base.MyApplication;
+import com.bby.youlianwallet.util.CacheUtils;
 import com.bby.youlianwallet.view.CircleImageView;
 
 import butterknife.BindView;
@@ -61,6 +62,10 @@ public class ManageFragment extends BaseLazyFragment implements OnClickListener 
     LinearLayout feedbackBtn;
     @BindView(R.id.ustd_btn)
     LinearLayout ustdBtn;
+    @BindView(R.id.clear_cache)
+    LinearLayout clearCache;
+    @BindView(R.id.menu_clear_cash)
+    TextView menuClearCash;
     private View view = null;
     private Unbinder unbinder;
 
@@ -84,7 +89,9 @@ public class ManageFragment extends BaseLazyFragment implements OnClickListener 
         tansferMoeny.setOnClickListener(this);
         myYeji.setOnClickListener(this);
         feedbackBtn.setOnClickListener(this);
+        clearCache.setOnClickListener(this);
         userName.setText(LoginUser.getLoginPhone());
+        menuClearCash.setText("清理缓存  （" + CacheUtils.getTotalCacheSize(mContext) + "）");
     }
 
     @Override
@@ -135,6 +142,10 @@ public class ManageFragment extends BaseLazyFragment implements OnClickListener 
                 startActivity(intent);
                 getActivity().finish();
                 MyApplication.exitApp();
+                break;
+            case R.id.clear_cache:
+                CacheUtils.clearAllCache(mContext);
+                menuClearCash.setText("清理缓存  （" + CacheUtils.getTotalCacheSize(mContext) + "）");
                 break;
             default:
                 break;

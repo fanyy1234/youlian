@@ -26,7 +26,10 @@ import com.bby.youlianwallet.network.ApiClient;
 import com.bby.youlianwallet.util.EntityUtil;
 import com.bby.youlianwallet.util.ToastUtil;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -46,6 +49,7 @@ public class MessageFragment extends BaseLazyFragment implements OnClickListener
 	List<Visitable> models = new ArrayList<Visitable>();
 	XRefreshView xRefreshView;
 	LinearLayoutManager layoutManager;
+	private SimpleDateFormat format3=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_message, container, false);
@@ -146,7 +150,7 @@ public class MessageFragment extends BaseLazyFragment implements OnClickListener
 					int length = jsonArray.size();
 					for (int i = 0; i< length; i++){
 						JSONObject jsonObject = jsonArray.getJSONObject(i);
-						String time = jsonObject.getString("ct");
+						String time = format3.format(new Date(jsonObject.getLong("ct")));
 						String title = jsonObject.getString("title");
 						String img = jsonObject.getString("image");
 						Notice notice = new Notice();
